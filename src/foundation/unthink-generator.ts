@@ -1,5 +1,8 @@
 import { ResourceDefinition } from './resource-definition';
 
+export interface UnthinkViewRenderer {
+  (template: string, value?: unknown): string;
+}
 
 export interface UnthinkGeneratorBackend<ResourceMiddleware> {
   generate(resourceDefinitions: ResourceDefinition<ResourceMiddleware>[]): void;

@@ -7,8 +7,15 @@ export type RouteMethod = 'get' | 'put' | 'post' | 'delete';
 export type ResourceRouteHandler<Result, ResourceMiddleware> = ResourceRouteHandlerBase<Result> | ResourceRouteHandlerWithMiddleware<Result, ResourceMiddleware>
 export type ResourceMethodMap<Result, ResourceMiddleware> = Partial<Record<RouteMethod, ResourceRouteHandler<Result, ResourceMiddleware>>>;
 
+// Directly support results from https://www.npmjs.com/package/qs
+// Type definition lifted from @types/express didn't see a need to alter
+// should be usable across many backends
+export interface Query {
+  [key: string]: string | Query | (string | Query)[];
+}
+
 export interface RouteContext {
-  query?: Record<string, string>;
+  query?: Query;
   params?: Record<string, string>;
   body?: object;
   headers?: Record<string, string>;
