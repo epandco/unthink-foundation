@@ -1,9 +1,21 @@
+export interface Cookie {
+  name: string;
+  value?: string;
+  maxAge?: number;
+  expires?: Date;
+  path?: string;
+  domain?: string;
+  secure?: boolean;
+  httpOnly?: boolean;
+  sameSite?: true | false | 'strict' | 'lax';
+  overwrite?: boolean;
+}
 
 export class Result {
   protected constructor(
     public readonly status: number,
     public readonly value?: unknown,
-    public readonly cookies?: unknown,
+    public readonly cookies?: Cookie[],
     public readonly headers?: Record<string, string>
   ) {}
 }
@@ -15,7 +27,7 @@ export class DataResult extends Result {
   private constructor(
     status: number,
     value?: unknown,
-    cookies?: unknown,
+    cookies?: Cookie[],
     headers?: Record<string, string>
   ) {
     super(status, value, cookies, headers);
@@ -24,20 +36,20 @@ export class DataResult extends Result {
     this.__type;
   }
 
-  public static ok(value?: unknown, cookies?: unknown, headers?: Record<string, string>): DataResult {
+  public static ok(value?: unknown, cookies?: Cookie[], headers?: Record<string, string>): DataResult {
     const status = value ? 200 : 204;
     return new DataResult(status, value, cookies, headers);
   }
 
-  public static error(value?: unknown, cookies?: unknown, headers?: Record<string, string>): DataResult {
+  public static error(value?: unknown, cookies?: Cookie[], headers?: Record<string, string>): DataResult {
     return new DataResult(400, value, cookies, headers);
   }
 
-  public static notFound(cookies?: unknown, headers?: Record<string, string>): DataResult {
+  public static notFound(cookies?: Cookie[], headers?: Record<string, string>): DataResult {
     return new DataResult(404, undefined, cookies, headers);
   }
 
-  public static unauthorized(cookies?: unknown, headers?: Record<string, string>): DataResult {
+  public static unauthorized(cookies?: Cookie[], headers?: Record<string, string>): DataResult {
     return new DataResult(401, undefined, cookies, headers);
   }
 }
@@ -52,7 +64,7 @@ export class ViewResult extends Result {
   private constructor(
     status: number,
     value?: unknown,
-    cookies?: unknown,
+    cookies?: Cookie[],
     headers?: Record<string, string>,
     template?: string,
     redirectUrl?: string
@@ -65,23 +77,23 @@ export class ViewResult extends Result {
     this.redirectUrl = redirectUrl;
   }
 
-  public static ok(template: string, value?: unknown, cookies?: unknown, headers?: Record<string, string>): ViewResult {
+  public static ok(template: string, value?: unknown, cookies?: Cookie[], headers?: Record<string, string>): ViewResult {
     return new ViewResult(200, value, cookies, headers, template);
   }
 
-  public static redirect(url: string, status: 301 | 302 = 302, cookies?: unknown, headers?: Record<string, string>): ViewResult {
+  public static redirect(url: string, status: 301 | 302 = 302, cookies?: Cookie[], headers?: Record<string, string>): ViewResult {
     return new ViewResult(status,undefined, cookies, headers, undefined, url);
   }
 
-  public static error(template: string, value?: unknown,  cookies?: unknown, headers?: Record<string, string>): ViewResult {
+  public static error(template: string, value?: unknown,  cookies?: Cookie[], headers?: Record<string, string>): ViewResult {
     return new ViewResult(400, value, cookies, headers, template);
   }
 
-  public static notFound(template: string, value?: unknown, cookies?: unknown, headers?: Record<string, string>): ViewResult {
+  public static notFound(template: string, value?: unknown, cookies?: Cookie[], headers?: Record<string, string>): ViewResult {
     return new ViewResult(404, value, cookies, headers, template);
   }
 
-  public static unauthorized(template: string, value?: unknown, cookies?: unknown, headers?: Record<string, string>): ViewResult {
+  public static unauthorized(template: string, value?: unknown, cookies?: Cookie[], headers?: Record<string, string>): ViewResult {
     return new ViewResult(401, value, cookies, headers, template);
   }
 }
