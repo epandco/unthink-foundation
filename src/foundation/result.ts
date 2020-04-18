@@ -12,7 +12,7 @@ export class DataResult extends Result {
   // Used to ensure UnthinkViewResult can't be assigned to this class.
   private readonly __type: 'DATA_RESULT';
 
-  constructor(
+  private constructor(
     status: number,
     value?: unknown,
     cookies?: unknown,
@@ -49,7 +49,7 @@ export class ViewResult extends Result {
   public template?: string;
   public redirectUrl?: string;
 
-  constructor(
+  private constructor(
     status: number,
     value?: unknown,
     cookies?: unknown,
