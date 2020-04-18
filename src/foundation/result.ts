@@ -73,15 +73,15 @@ export class ViewResult extends Result {
     return new ViewResult(status,undefined, cookies, headers, undefined, url);
   }
 
-  public static error(value?: unknown, template?: string,  cookies?: unknown, headers?: Record<string, string>): ViewResult {
+  public static error(template: string, value?: unknown,  cookies?: unknown, headers?: Record<string, string>): ViewResult {
     return new ViewResult(400, value, cookies, headers, template);
   }
 
-  public static notFound(value?: unknown, template?: string, cookies?: unknown, headers?: Record<string, string>): ViewResult {
+  public static notFound(template: string, value?: unknown, cookies?: unknown, headers?: Record<string, string>): ViewResult {
     return new ViewResult(404, value, cookies, headers, template);
   }
 
-  public static unauthorized(value?: unknown, template?: string, cookies?: unknown, headers?: Record<string, string>): ViewResult {
+  public static unauthorized(template: string, value?: unknown, cookies?: unknown, headers?: Record<string, string>): ViewResult {
     return new ViewResult(401, value, cookies, headers, template);
   }
 }
