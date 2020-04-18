@@ -51,10 +51,10 @@ export class ViewResult extends Result {
 
   constructor(
     status: number,
-    template?: string,
     value?: unknown,
     cookies?: unknown,
     headers?: Record<string, string>,
+    template?: string,
     redirectUrl?: string
   ) {
     super(status, value, cookies, headers);
