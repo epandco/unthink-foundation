@@ -7,7 +7,7 @@ export interface Cookie {
   domain?: string;
   secure?: boolean;
   httpOnly?: boolean;
-  sameSite?: true | false | 'strict' | 'lax';
+  sameSite?: boolean | 'strict' | 'lax';
   overwrite?: boolean;
 }
 

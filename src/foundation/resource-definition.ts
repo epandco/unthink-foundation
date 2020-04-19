@@ -1,4 +1,4 @@
-import { DataResult, ViewResult } from './result';
+import { Cookie, DataResult, ViewResult } from './result';
 
 
 /** Routes */
@@ -19,7 +19,7 @@ export interface RouteContext {
   params?: Record<string, string>;
   body?: object;
   headers?: Record<string, string>;
-  cookies?: Record<string, string>;
+  cookies?: Cookie[];
   local?: Record<string, unknown>;
 }
 
