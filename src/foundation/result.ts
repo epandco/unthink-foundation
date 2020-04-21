@@ -74,7 +74,10 @@ export class DataResult extends Result {
     return new DataResult(204, sanitized);
   }
 
-  public static error(options?: ResultOptionsWithValue): DataResult {
+  public static error(value: unknown, options?: ResultOptionsNoValue): DataResult {
+    const optionsWithValue: ResultOptionsWithValue = options ?? {};
+    optionsWithValue.value = value;
+
     return new DataResult(400, options);
   }
 
