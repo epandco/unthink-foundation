@@ -1,5 +1,5 @@
 import { Cookie, DataResult, ViewResult } from './result';
-
+import { BaseLogger } from 'pino';
 
 /** Routes */
 
@@ -21,6 +21,7 @@ export interface RouteContext {
   headers?: Record<string, string>;
   cookies?: Cookie[];
   local?: Record<string, unknown>;
+  logger: BaseLogger;
 }
 
 export interface ResourceRouteHandlerBase<Result = unknown> {
