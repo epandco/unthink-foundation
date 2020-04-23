@@ -78,7 +78,7 @@ export class DataResult extends Result {
     const optionsWithValue: ResultOptionsWithValue = options ?? {};
     optionsWithValue.value = value;
 
-    return new DataResult(400, options);
+    return new DataResult(400, optionsWithValue);
   }
 
   public static notFound(options?: ResultOptionsNoValue): DataResult {
