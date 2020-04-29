@@ -62,16 +62,10 @@ export class DataResult extends Result {
     this.__type;
   }
 
-  public static ok(value: unknown, options?: ResultOptionsNoValue): DataResult {
-    const optionsWithValue: ResultOptionsWithValue = options ?? {};
-    optionsWithValue.value = value;
+  public static ok(options?: ResultOptionsWithValue): DataResult {
+    const status = options?.value ? 200 : 204;
 
-    return new DataResult(200, optionsWithValue);
-  }
-
-  public static noResult(options?: ResultOptionsNoValue): DataResult {
-    const sanitized = ensureNoValueOnOptions(options);
-    return new DataResult(204, sanitized);
+    return new DataResult(status, options);
   }
 
   public static error(value: unknown, options?: ResultOptionsNoValue): DataResult {
