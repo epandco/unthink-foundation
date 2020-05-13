@@ -22,6 +22,7 @@ export interface RouteContext {
   cookies?: Cookie[];
   local?: Record<string, unknown>;
   logger: BaseLogger;
+  path: string;
 }
 
 export interface ResourceRouteHandlerBase<Result = unknown> {
