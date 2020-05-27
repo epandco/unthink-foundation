@@ -1,23 +1,23 @@
 import * as path from 'path';
-import { ResourceDefinition } from './resource-definition';
+import { UnthinkMiddleware, ResourceDefinition } from './resource-definition';
 
 export interface UnthinkViewRenderer {
   (template: string, value?: unknown): string;
 }
 
-export interface UnthinkGeneratorBackend<ResourceMiddleware> {
-  generate(resourceDefinitions: ResourceDefinition<ResourceMiddleware>[]): void;
+export interface UnthinkGeneratorBackend {
+  generate(resourceDefinitions: ResourceDefinition<UnthinkMiddleware>[]): void;
 }
 
-export class UnthinkGenerator<ResourceMiddleware> {
-  private resourceDefinitions: ResourceDefinition<ResourceMiddleware>[] = [];
-  private generatorBackend: UnthinkGeneratorBackend<ResourceMiddleware>;
+export class UnthinkGenerator {
+  private resourceDefinitions: ResourceDefinition<UnthinkMiddleware>[] = [];
+  private generatorBackend: UnthinkGeneratorBackend;
 
-  constructor(generatorBackend: UnthinkGeneratorBackend<ResourceMiddleware>) {
+  constructor(generatorBackend: UnthinkGeneratorBackend) {
     this.generatorBackend = generatorBackend;
   }
 
-  add(resourceDefinition: ResourceDefinition<ResourceMiddleware>): UnthinkGenerator<ResourceMiddleware> {
+  add(resourceDefinition: ResourceDefinition<UnthinkMiddleware>): UnthinkGenerator {
     this.resourceDefinitions.push(resourceDefinition);
     return this;
   }
@@ -45,6 +45,6 @@ export class UnthinkGenerator<ResourceMiddleware> {
   }
 
   generate(): void {
-    this.generatorBackend.generate(this.resourceDefinitions, );
+    this.generatorBackend.generate(this.resourceDefinitions);
   }
 }
