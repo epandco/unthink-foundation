@@ -1,8 +1,9 @@
 import * as path from 'path';
-import { UnthinkMiddleware, ResourceDefinition } from './resource-definition';
+import { UnthinkMiddleware, ResourceDefinition, RouteContext } from './resource-definition';
+import { Result } from './result';
 
 export interface UnthinkViewRenderer {
-  (template: string, value?: unknown): string;
+  (result: Result, routeContext: RouteContext): string;
 }
 
 export interface UnthinkGeneratorBackend {

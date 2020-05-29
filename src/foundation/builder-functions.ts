@@ -1,39 +1,47 @@
 import { DataResult, ViewResult } from './result';
 import {
-  ResourceConfig,
+  MiddlewareType,
   ResourceDataRouteDefinition,
   ResourceDefinition,
   ResourceMethodMap,
   ResourceRouteHandler,
   ResourceViewRouteDefinition,
+  RouteType,
   UnthinkCommonMiddleware,
   UnthinkDataMiddleware,
   UnthinkMiddleware,
-  UnthinkMiddlewareHandler, UnthinkViewMiddleware
+  UnthinkMiddlewareHandler,
+  UnthinkViewMiddleware
 } from './resource-definition';
 
+export interface ResourceRouteConfig<ResourceMiddleware> {
+  prefix?: string;
+  routeId?: string;
+  middleware?: ResourceMiddleware[];
+}
 
 export function data<ResourceMiddleware>(
   path: string,
   methods: ResourceMethodMap<DataResult, ResourceMiddleware>,
-  config: ResourceConfig<ResourceMiddleware> = {}): ResourceDataRouteDefinition<ResourceMiddleware> {
+  config: ResourceRouteConfig<ResourceMiddleware> = {}): ResourceDataRouteDefinition<ResourceMiddleware> {
 
   if (!config.prefix) {
     config.prefix = '/api';
   }
 
   return {
+    __routeType: RouteType.DATA,
     path: path,
     methods: methods,
     prefix: config.prefix,
     middleware: config.middleware
-  } as ResourceDataRouteDefinition<ResourceMiddleware>;
+  };
 }
 
 export function view<ResourceMiddleware>(
   path: string,
   handler: string | ResourceRouteHandler<ViewResult, ResourceMiddleware>,
-  config: ResourceConfig<ResourceMiddleware> = {}): ResourceViewRouteDefinition<ResourceMiddleware> {
+  config: ResourceRouteConfig<ResourceMiddleware> = {}): ResourceViewRouteDefinition<ResourceMiddleware> {
 
   let methodMap: ResourceMethodMap<ViewResult, ResourceMiddleware>;
 
@@ -48,23 +56,33 @@ export function view<ResourceMiddleware>(
   }
 
   return {
+    __routeType: RouteType.VIEW,
     path: path,
     methods: methodMap,
     prefix: config.prefix,
     middleware: config.middleware
-  } as ResourceViewRouteDefinition<ResourceMiddleware>;
+  };
 }
 
 export function commonMiddleware(func: UnthinkMiddlewareHandler): UnthinkCommonMiddleware {
-  return func as UnthinkCommonMiddleware;
+  const commonMiddlewareHandler = func as UnthinkCommonMiddleware;
+  commonMiddlewareHandler.__middlewareType = MiddlewareType.COMMON;
+
+  return commonMiddlewareHandler;
 }
 
 export function dataMiddleware(func: UnthinkMiddlewareHandler): UnthinkDataMiddleware {
-  return func as UnthinkDataMiddleware;
+  const dataMiddlewareHandler = func as UnthinkDataMiddleware;
+  dataMiddlewareHandler.__middlewareType = MiddlewareType.DATA;
+
+  return dataMiddlewareHandler;
 }
 
 export function viewMiddleware(func: UnthinkMiddlewareHandler): UnthinkViewMiddleware {
-  return func as UnthinkViewMiddleware;
+  const viewMiddlewareHandler = func as UnthinkViewMiddleware;
+  viewMiddlewareHandler.__middlewareType = MiddlewareType.VIEW;
+
+  return viewMiddlewareHandler;
 }
 
 export function unthinkResource(

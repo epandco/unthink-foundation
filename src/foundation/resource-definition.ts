@@ -35,7 +35,6 @@ export interface RouteContext {
   local?: Record<string, unknown>;
   logger: BaseLogger;
   path: string;
-  routeType: RouteType;
 }
 
 export interface UnthinkMiddlewareHandler {
@@ -72,6 +71,7 @@ export interface ResourceRouteHandlerWithMiddleware<Result, ResourceMiddleware> 
 export interface ResourceRouteDefinitionBase<Result, ResourceMiddleware> {
   path: string;
   prefix?: string;
+  routeId?: string;
   middleware?: ResourceMiddleware[];
   methods: ResourceMethodMap<Result, ResourceMiddleware>;
 }
@@ -93,9 +93,3 @@ export interface ResourceDefinition<ResourceMiddleware> {
   middleware?: ResourceMiddleware[];
   routes: ResourceRouteDefinition<ResourceMiddleware>[];
 }
-
-export interface ResourceConfig<ResourceMiddleware> {
-  prefix?: string;
-  middleware?: ResourceMiddleware[];
-}
-
