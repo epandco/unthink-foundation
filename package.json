@@ -1,6 +1,6 @@
 {
   "name": "@epandco/unthink-foundation",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Core components of the unthink-stack resource layer.",
   "scripts": {
     "prepublishOnly": "npm run build",

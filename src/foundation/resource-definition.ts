@@ -1,7 +1,19 @@
-import { Cookie, DataResult, ViewResult } from './result';
+import { Cookie, DataResult, MiddlewareResult, ViewResult } from './result';
 import { BaseLogger } from 'pino';
 
 /** Routes */
+
+export enum RouteType {
+  VIEW = 'VIEW',
+  DATA = 'DATA'
+}
+
+export enum MiddlewareType {
+  COMMON = 'UNTHINK_COMMON_MIDDLEWARE',
+  DATA = 'UNTHINK_DATA_MIDDLEWARE',
+  VIEW = 'UNTHINK_VIEW_MIDDLEWARE',
+  RAW = 'UNTHINK_RAW_MIDDLEWARE',
+}
 
 export type RouteMethod = 'get' | 'put' | 'post' | 'delete';
 export type ResourceRouteHandler<Result, ResourceMiddleware> = ResourceRouteHandlerBase<Result> | ResourceRouteHandlerWithMiddleware<Result, ResourceMiddleware>
@@ -25,6 +37,28 @@ export interface RouteContext {
   path: string;
 }
 
+export interface UnthinkMiddlewareHandler {
+  (context: RouteContext): MiddlewareResult | Promise<MiddlewareResult>;
+}
+
+export interface UnthinkCommonMiddleware extends UnthinkMiddlewareHandler {
+  __middlewareType: MiddlewareType.COMMON;
+}
+
+export interface UnthinkDataMiddleware extends UnthinkMiddlewareHandler {
+  __middlewareType: MiddlewareType.DATA;
+}
+
+export interface UnthinkViewMiddleware extends UnthinkMiddlewareHandler {
+  __middlewareType: MiddlewareType.VIEW;
+}
+
+export interface UnthinkRawMiddleware {
+  __middlewareType: MiddlewareType.RAW;
+}
+
+export type UnthinkMiddleware = UnthinkCommonMiddleware | UnthinkDataMiddleware | UnthinkViewMiddleware | UnthinkRawMiddleware;
+
 export interface ResourceRouteHandlerBase<Result = unknown> {
   (context: RouteContext): Promise<Result>;
 }
@@ -37,6 +71,7 @@ export interface ResourceRouteHandlerWithMiddleware<Result, ResourceMiddleware> 
 export interface ResourceRouteDefinitionBase<Result, ResourceMiddleware> {
   path: string;
   prefix?: string;
+  routeId?: string;
   middleware?: ResourceMiddleware[];
   methods: ResourceMethodMap<Result, ResourceMiddleware>;
 }
@@ -45,11 +80,11 @@ export interface ResourceRouteDefinitionBase<Result, ResourceMiddleware> {
 export type ResourceRouteDefinition<ResourceMiddleware> = ResourceDataRouteDefinition<ResourceMiddleware> | ResourceViewRouteDefinition<ResourceMiddleware>;
 
 export interface ResourceDataRouteDefinition<ResourceMiddleware> extends ResourceRouteDefinitionBase<DataResult, ResourceMiddleware> {
-  __routeType: 'DATA';
+  __routeType: RouteType.DATA;
 }
 
 export interface ResourceViewRouteDefinition<ResourceMiddleware> extends ResourceRouteDefinitionBase<ViewResult, ResourceMiddleware> {
-  __routeType: 'VIEW';
+  __routeType: RouteType.VIEW;
 }
 
 export interface ResourceDefinition<ResourceMiddleware> {
@@ -57,9 +92,4 @@ export interface ResourceDefinition<ResourceMiddleware> {
   basePath?: string;
   middleware?: ResourceMiddleware[];
   routes: ResourceRouteDefinition<ResourceMiddleware>[];
-}
-
-export interface ResourceConfig<ResourceMiddleware> {
-  prefix?: string;
-  middleware?: ResourceMiddleware[];
 }
