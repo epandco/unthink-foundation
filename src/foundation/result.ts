@@ -21,16 +21,15 @@ export class Result {
   ) {}
 }
 
-export interface ResultOptionsWithValue {
-  value?: unknown;
+/** Used primarily in data routes where we want to force a value and it not show up in the options */
+export interface ResultOptionsNoValue {
+  local?: Record<string, unknown>;
   cookies?: Cookie[];
   headers?: Record<string, string>;
 }
 
-/** Used primarily in data routes where we want to force a value and it not show up in the options */
-export interface ResultOptionsNoValue {
-  cookies?: Cookie[];
-  headers?: Record<string, string>;
+export interface ResultOptionsWithValue extends ResultOptionsNoValue {
+  value?: unknown;
 }
 
 function ensureNoValueOnOptions(options?: ResultOptionsNoValue): ResultOptionsWithValue {

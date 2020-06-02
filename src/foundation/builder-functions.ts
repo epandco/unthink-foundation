@@ -64,7 +64,7 @@ export function view<ResourceMiddleware>(
   };
 }
 
-export function commonMiddleware(func: UnthinkMiddlewareHandler): UnthinkCommonMiddleware {
+export function agnosticMiddleware(func: UnthinkMiddlewareHandler): UnthinkCommonMiddleware {
   const commonMiddlewareHandler = func as UnthinkCommonMiddleware;
   commonMiddlewareHandler.__middlewareType = MiddlewareType.COMMON;
 
