@@ -17,7 +17,8 @@ export class Result {
     public readonly value?: unknown,
     public readonly cookies?: Cookie[],
     public readonly headers?: Record<string, string>,
-    public readonly redirectUrl?: string
+    public readonly redirectUrl?: string,
+    public readonly local?: Record<string, unknown>
   ) {}
 }
 
@@ -57,7 +58,7 @@ export class DataResult extends Result {
     redirectUrl?: string,
     options?: ResultOptionsWithValue
   ) {
-    super(status, options?.value, options?.cookies, options?.headers, redirectUrl);
+    super(status, options?.value, options?.cookies, options?.headers, redirectUrl, options?.local);
   }
 
   public static ok(options?: ResultOptionsWithValue): DataResult {
@@ -101,7 +102,7 @@ export class ViewResult extends Result {
     redirectUrl?: string,
     options?: ResultOptionsWithValue
   ) {
-    super(status, options?.value, options?.cookies, options?.headers, redirectUrl);
+    super(status, options?.value, options?.cookies, options?.headers, redirectUrl, options?.local);
 
     this.template = template;
   }
@@ -142,7 +143,7 @@ export class MiddlewareResult extends Result {
     redirectUrl?: string,
     options?: ResultOptionsWithValue
   ) {
-    super(status, options?.value, options?.cookies, options?.headers, redirectUrl);
+    super(status, options?.value, options?.cookies, options?.headers, redirectUrl, options?.local);
 
     this.continue = cont;
     this.end = end;

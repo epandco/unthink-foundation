@@ -32,7 +32,7 @@ export interface RouteContext {
   body?: object;
   headers?: Record<string, string>;
   cookies?: Cookie[];
-  local?: Record<string, unknown>;
+  local?: Readonly<Record<string, unknown>>;
   logger: BaseLogger;
   path: string;
 }
